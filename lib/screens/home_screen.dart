@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:pomodoronepal/model/pomodoro_status.dart';
 import 'package:pomodoronepal/utils/constants.dart';
@@ -47,31 +48,80 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
 
       backgroundColor: Colors.grey[900],
-      appBar: AppBar(title: Text('Pomodoro Nepal'),),
+      appBar: AppBar(title: Row(
+        children: [
+          Text('Pomodoro Nepal',style: GoogleFonts.raleway(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          ),
+          // Image.asset('assets/images/flag.png', scale: 10,)
+
+        ],
+      ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Icon(Icons.person, size: 32,),
+          ),
+        ],
+    ),
 
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
+              SizedBox(height: 20,),
+              Text('Pomodoro Number: $pomodoroNum', style: GoogleFonts.raleway(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange.shade100,
+              ),
+            ),
               SizedBox(height: 10,),
-              Text('Pomodoro Number: $pomodoroNum', style: TextStyle(fontSize: 32, color: Colors.white),),
-              SizedBox(height: 10,),
-              Text('Set: $setNum', style: TextStyle(fontSize: 22, color: Colors.white),),
+              Text('Set: $setNum', style: GoogleFonts.raleway(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange.shade100,
+              ),),
               Expanded(child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularPercentIndicator(radius: 160, lineWidth: 15, percent: _getPomodoroPercentage(), center: Text(_secondsToFormattedString(remainingTime), style: TextStyle(fontSize: 40, color: Colors.white),),
-                  progressColor: statusColor[pomodoroStatus],
-                    circularStrokeCap: CircularStrokeCap.round,
+                  Stack(
+                    children: [
+                      Positioned(
+                          child: Image.asset('assets/images/flag.png', width: 280,),
+                        left: 50,
+                        top: 6.5,
+                        right: 10,
+                        bottom: 30,
+
+
+                      ),
+                      CircularPercentIndicator(radius: 160, lineWidth: 15, percent: _getPomodoroPercentage(), center: Card(
+
+                        shadowColor: Colors.black,
+                        elevation: 10,
+                        color: Colors.red.withOpacity(0.5),
+                        child: Text(_secondsToFormattedString(remainingTime), style: GoogleFonts.lato(
+                        fontSize: 70,
+                        color: Colors.white,
+                    ),),
+                      ),
+                      progressColor: statusColor[pomodoroStatus],
+                      circularStrokeCap: CircularStrokeCap.round,
+                    ),
+                    ]
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 25,),
                   ProgressIcon(total: pomodoroPerSet, done: pomodoroNum - (setNum * pomodoroPerSet)),
                   SizedBox(height: 10,),
                   Text(statusDescription[pomodoroStatus]!, style: TextStyle(color: Colors.white, fontSize: 18),),
                   SizedBox(height: 10,),
                   CustomButton(onTap: (){
                     _mainButtonPressed();
-                  }, text: 'Start'),
+                  }, text: mainBtnText ),
                   CustomButton(onTap: (){
                     _resetButtonPressed();
                   }, text: _btnTextReset)

@@ -43,6 +43,10 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   badges: ^3.0.2
   percent_indicator: ^4.2.3
+  google_fonts: ^4.0.3
+
+  material_design_icons_flutter: ^6.0.7096
+  flutter_vector_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -67,9 +71,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/nepal.png
+    - assets/images/nepalflag.png
+    - assets/images/flag.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

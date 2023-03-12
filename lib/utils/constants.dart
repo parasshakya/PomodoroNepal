@@ -18,12 +18,12 @@ const Map<PomodoroStatus, String> statusDescription = {
 };
 
 const Map<PomodoroStatus, MaterialColor> statusColor = {
-  PomodoroStatus.runningPomodoro : Colors.green,
+  PomodoroStatus.runningPomodoro : Colors.red,
   PomodoroStatus.pausedPomodoro : Colors.orange,
   PomodoroStatus.pausedShortBreak : Colors.orange,
   PomodoroStatus.pausedLongBreak : Colors.orange,
-  PomodoroStatus.runningLongBreak : Colors.red,
-  PomodoroStatus.runningShortBreak : Colors.red,
+  PomodoroStatus.runningLongBreak : Colors.green,
+  PomodoroStatus.runningShortBreak : Colors.green,
   PomodoroStatus.setFinished : Colors.orange,
 
 };
