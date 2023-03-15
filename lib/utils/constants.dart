@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pomodoronepal/model/pomodoro_status.dart';
 
-const pomodoroTotalTime = 25 * 60;
-const shortBreakTime = 5 * 60;
-const longBreakTime = 15 * 60;
+const pomodoroTotalTime = 1;
+const shortBreakTime = 1;
+const longBreakTime = 1;
 const pomodoroPerSet = 4;
 
 const Map<PomodoroStatus, String> statusDescription = {
@@ -13,7 +13,7 @@ const Map<PomodoroStatus, String> statusDescription = {
   PomodoroStatus.pausedLongBreak : 'Let\'s have a long break?',
   PomodoroStatus.runningLongBreak : 'Long break running, time to relax',
   PomodoroStatus.runningShortBreak : 'Short break running, time to relax',
-  PomodoroStatus.setFinished : 'Congrats, you deserve a long break, ready to start?',
+  PomodoroStatus.setFinished : 'Congrats, set completed, ready to start a new set?',
 
 };
 

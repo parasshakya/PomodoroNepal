@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1093250405799",
+    "project_id": "pomodoro-nepal",
+    "storage_bucket": "pomodoro-nepal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093250405799:android:371b0bf6220d8e30af5282",
+        "android_client_info": {
+          "package_name": "com.pomodoronepal.pomodoronepal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093250405799-1ubdr537r1dlvhjomj2rldot9srp9sq6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYefEIlu2pgsYmjsMDFYzK7HtN0Xc5sUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093250405799-1ubdr537r1dlvhjomj2rldot9srp9sq6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

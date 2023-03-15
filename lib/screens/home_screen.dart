@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -29,6 +29,7 @@ const _btnTextPause = "PAUSE POMODORO";
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  static AudioPlayer audioPlayer = AudioPlayer();
   int remainingTime = pomodoroTotalTime;
   String mainBtnText = _btnTextStart;
   PomodoroStatus pomodoroStatus = PomodoroStatus.pausedPomodoro;
@@ -36,17 +37,44 @@ class _HomeScreenState extends State<HomeScreen> {
   int pomodoroNum = 0;
   int setNum = 0;
 
+
+
   @override
   void dispose(){
+    audioPlayer.dispose();
     _cancelTimer();
     super.dispose();
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
 
+      drawer: SafeArea(
+        child: Drawer(
+          backgroundColor: Colors.grey[900],
+          width: 280,
+          child: ListView(
+            padding: EdgeInsets.only(top: 20),
+            children: [
+                  ListTile(
+                    title: Text('Settings'),
+                    onTap: (){},
+                    leading: Icon(Icons.settings_applications),
+                  ),
+              ListTile(
+                    title: Text('Log out'),
+                    onTap: (){},
+                    leading: Icon(Icons.login_outlined),
+                  )
+            ],
+          ),
+        ),
+      ),
       backgroundColor: Colors.grey[900],
       appBar: AppBar(title: Row(
         children: [
@@ -117,7 +145,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 25,),
                   ProgressIcon(total: pomodoroPerSet, done: pomodoroNum - (setNum * pomodoroPerSet)),
                   SizedBox(height: 10,),
-                  Text(statusDescription[pomodoroStatus]!, style: TextStyle(color: Colors.white, fontSize: 18),),
+                  Text(statusDescription[pomodoroStatus]!, style: GoogleFonts.raleway(
+                    fontSize: 13,
+                    color: Colors.white,
+                  ),),
                   SizedBox(height: 10,),
                   CustomButton(onTap: (){
                     _mainButtonPressed();
@@ -192,22 +223,24 @@ class _HomeScreenState extends State<HomeScreen> {
       case PomodoroStatus.runningPomodoro : _pausePomodoroCountdown();
       break;
 
-      case PomodoroStatus.runningShortBreak : break;
+      case PomodoroStatus.runningShortBreak : _pauseShortBreakCountDown(); break;
 
 
-      case PomodoroStatus.pausedShortBreak :
+      case PomodoroStatus.pausedShortBreak : _startShortBreak();
         break;
 
-      case PomodoroStatus.runningLongBreak :
+      case PomodoroStatus.runningLongBreak : _pauseLongBreakCountDown();
         break;
 
-      case PomodoroStatus.pausedLongBreak :
+      case PomodoroStatus.pausedLongBreak :_startLongBreak();
         break;
 
 
       case PomodoroStatus.setFinished :
+        setNum++;
+        pomodoroNum = 0;
+      _startPomodoroCountdown();
         break;
-
     }
 
   }
@@ -215,9 +248,6 @@ class _HomeScreenState extends State<HomeScreen> {
   _startPomodoroCountdown(){
     pomodoroStatus = PomodoroStatus.runningPomodoro;
     _cancelTimer();
-    if(_timer != null){
-      _timer!.cancel();
-    }
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if(remainingTime > 0){
@@ -226,6 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainBtnText = _btnTextPause;
         });
       }else{
+        _playSound();
         pomodoroNum++;
        _cancelTimer();
        if(pomodoroNum % pomodoroPerSet == 0){
@@ -252,6 +283,53 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  _startShortBreak(){
+    pomodoroStatus = PomodoroStatus.runningShortBreak;
+    setState(() {
+      mainBtnText = _btnTextPause;
+    });
+    _cancelTimer();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if(remainingTime > 0){
+        setState(() {
+          remainingTime--;
+        });
+      }else{
+        //todo play sound
+        _playSound();
+        remainingTime = pomodoroTotalTime;
+        _cancelTimer();
+        pomodoroStatus = PomodoroStatus.pausedPomodoro;
+        setState(() {
+          mainBtnText = _btnTextStart;
+        });
+      }
+    });
+  }
+  _startLongBreak(){
+    pomodoroStatus = PomodoroStatus.runningLongBreak;
+    setState(() {
+      mainBtnText = _btnTextPause;
+    });
+    _cancelTimer();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if(remainingTime > 0){
+        setState(() {
+          remainingTime--;
+        });
+      }else{
+        //todo play sound
+        _playSound();
+        remainingTime = pomodoroTotalTime;
+        _cancelTimer();
+        pomodoroStatus = PomodoroStatus.setFinished;
+        setState(() {
+          mainBtnText = _btnTextStartNewSet;
+        });
+      }
+    });
+  }
+
   _resetButtonPressed(){
     pomodoroNum = 0;
     setNum = 0;
@@ -270,6 +348,29 @@ class _HomeScreenState extends State<HomeScreen> {
     if(_timer != null){
       _timer!.cancel();
     }
+  }
+
+  _pauseShortBreakCountDown(){
+    pomodoroStatus = PomodoroStatus.pausedShortBreak;
+    _pauseBreakCountDown();
+  }
+  _pauseBreakCountDown(){
+    _cancelTimer();
+    setState(() {
+      mainBtnText = _btnTextResumeBreak;
+    });
+  }
+
+  _pauseLongBreakCountDown(){
+    pomodoroStatus = PomodoroStatus.pausedLongBreak;
+    _pauseBreakCountDown();
+
+  }
+
+
+
+   _playSound()  {
+    audioPlayer.play(AssetSource('bell.mp3') );
   }
   
 }
